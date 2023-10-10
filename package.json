@@ -1,0 +1,42 @@
+{
+  "name": "kenya-power-planned-interruption",
+  "version": "0.0.1",
+  "description": "This project aims to create an automated solution that converts Kenya Power Planned Power Interruptions Schedules from a pdf and image to a searchable online list.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "backend",
+    "kenya",
+    "automation",
+    "kenya power"
+  ],
+  "author": "Munene Ndereba",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "mariadb": "^3.2.1",
+    "morgan-body": "^2.6.9",
+    "pdf2json": "^3.0.4",
+    "sequelize": "^6.33.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/munenendereba/kenya-power-planned-interruption.git"
+  },
+  "bugs": {
+    "url": "https://github.com/munenendereba/kenya-power-planned-interruption/issues"
+  },
+  "homepage": "https://github.com/munenendereba/kenya-power-planned-interruption#readme"
+}

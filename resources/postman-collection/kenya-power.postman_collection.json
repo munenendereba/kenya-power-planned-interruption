@@ -1,0 +1,929 @@
+{
+	"info": {
+		"_postman_id": "5bac143d-ebcd-4fdb-babb-dcdc810b9edc",
+		"name": "kenya-power-linode",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10771695"
+	},
+	"item": [
+		{
+			"name": "region",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/region",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"region"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/region/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"region",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/region/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"region",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Central Rift\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/region",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"region"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Central Rift.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/region",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"region"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "file details",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/file-details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"file-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/file-details/32",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"file-details",
+								"32"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/file-details/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"file-details",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"pdf3\",\n    \"type\": \"pdf\",\n    \"status\": \"pending\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/file-details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"file-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 32,\n    \"downloadStatus\": \"pending\",\n    \"parseStatus\": \"pending\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/file-details",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"file-details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "app config",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/app-config",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"app-config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/app-config/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"app-config",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"remoteUrl\": \"https://www.kplc.co.ke/category/view/50\",\n    \"downloadPath\": \"/root/node-apps/kenya-power-ppi-files\",\n    \"twitterAccount\": \"KenyaPowerCare\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/app-config",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"app-config"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "county",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/county",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"county"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/county/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"county",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/county/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"county",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Mombasa\",\n    \"headquarters\": \"Mombasa City\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/county",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"county"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Mombasa\",\n    \"headquarters\": \"Mombasa Town\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/county",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"county"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "area",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/area",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"area"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/area/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"area",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/area/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"area",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\":\"Kiambu Town\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/area",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"area"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 2,\n  \"name\": \"Meru Town\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/area",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"area"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "location",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/location",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/location/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/location/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\":\"Kiambu Town\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/location",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"name\": \"Meru Town\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/location",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "interruption",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/interruption",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"interruption"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/interruption/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"interruption",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/interruption/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"interruption",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"date\": \"2023-09-01\",\n    \"startTime\": \"09:00\",\n    \"endTime\": \"17:00\",\n    \"locations\": \"Katheri, Githongo\",\n    \"area\": \"Abothuguchi Area\",\n    \"county\": \"Meru County\",\n    \"region\": \"MT Kenya\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/interruption",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"interruption"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 1,\n  \"date\": \"2023-09-02\",\n  \"startTime\": \"09:00\",\n  \"endTime\": \"17:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/interruption",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"interruption"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "location-interruption",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/location-interruption",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location-interruption"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/location-interruption/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location-interruption",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/location-interruption/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location-interruption",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"locationId\": 1,\n  \"interruptionId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/location-interruption",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location-interruption"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 2,\n  \"locationId\": 1,\n  \"interruptionId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/location-interruption",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"location-interruption"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "download",
+			"item": [
+				{
+					"name": "get upload files",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/get-upload-files",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get-upload-files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "download files",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/download-files",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"download-files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "parse pdf",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/parse-files",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"parse-files"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
