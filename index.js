@@ -10,6 +10,7 @@ import fileDetailsMethods from "./controllers/file_details_controller.js";
 import urlScraperMethods from "./services/url_scraper.js";
 import downloadFilesMethods from "./services/file_downloader.js";
 import parseFileMethods from "./services/parse_pdf.js";
+import cors from "cors";
 
 const app = express();
 
@@ -17,6 +18,8 @@ configDotenv();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(cors());
 
 morganBody(app);
 
