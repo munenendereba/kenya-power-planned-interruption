@@ -44,6 +44,10 @@ app.get("/interruption", interruptionMethods.getInterruptions);
 app.get("/interruption/:id", interruptionMethods.getInterruptionById);
 app.delete("/interruption/:id", interruptionMethods.deleteInterruption);
 app.put("/interruption", interruptionMethods.updateInterruption);
+app.get(
+  "/interruption/search/:location",
+  interruptionMethods.searchInterruption
+);
 
 app.get("/app-config", appConfigMethods.getAppConfig);
 app.delete("/app-config", appConfigMethods.deleteAppConfig);

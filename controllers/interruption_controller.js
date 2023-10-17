@@ -1,5 +1,7 @@
 import { error } from "console";
 import Interruption from "../db/models/interruption.js";
+import sequelize from "../db/config/connection.js";
+import { QueryTypes } from "sequelize";
 
 const createInterruption = (request, response) => {
   const newInterruption = request.body;
@@ -64,7 +66,6 @@ const updateInterruption = (request, response) => {
     },
   })
     .then((res) => {
-      console.log("the res is: ", res);
       res[0] === 0
         ? response.status(404).send("Interruption not found!")
         : response.sendStatus(200);
@@ -75,10 +76,30 @@ const updateInterruption = (request, response) => {
     });
 };
 
+async function searchInterruption(request, response) {
+  const searchTerm = request.params.location;
+
+  await sequelize
+    .query("SELECT * FROM `interruption` WHERE locations LIKE :search", {
+      replacements: { search: "%" + searchTerm + "%" },
+      type: QueryTypes.SELECT,
+    })
+    .then((res) => {
+      res
+        ? response.status(200).send(res)
+        : response.status(404).send("Location not found!");
+    })
+    .catch((error) => {
+      response.sendStatus(500);
+      console.log("Error retrieiving interruption: ", error);
+    });
+}
+
 export default {
   createInterruption,
   getInterruptions,
   getInterruptionById,
   deleteInterruption,
   updateInterruption,
+  searchInterruption,
 };
