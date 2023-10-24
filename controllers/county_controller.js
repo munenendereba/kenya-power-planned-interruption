@@ -17,13 +17,11 @@ const createCounty = (request, response) => {
 const getCounties = (request, response) => {
   County.findAll()
     .then((res) => {
-      res.length === 0
-        ? response.status(404).send("County not found!")
-        : response.status(200).send(res);
+      response.status(200).send(res);
     })
     .catch((error) => {
       res.sendStatus(500);
-      console.log("Error retrieving countys: ", error);
+      console.log("Error retrieving counties: ", error);
     });
 };
 
