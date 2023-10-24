@@ -1,11 +1,14 @@
 import AppConfig from "../db/models/app_config.js";
-import { response } from "express";
 
 //there's no create config because it is initiated by the seeders, then a user updates
 //there will only ever be one record.
 
 const getAppConfig = (request, response) => {
-  AppConfig.findAll()
+  AppConfig.findOne({
+    where: {
+      id: 1,
+    },
+  })
     .then((res) => {
       res.length === 0
         ? response.status(404).send("AppConfig not found!")

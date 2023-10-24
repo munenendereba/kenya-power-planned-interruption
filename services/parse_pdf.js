@@ -65,7 +65,7 @@ function parse_pdf(pdf_file) {
             }
 
             //we get the previous line to check if it is NAIROBI REGION and default NAIROBI COUNTY
-            const previousRegionLine = lines[j - 1];
+            //const previousRegionLine = lines[j - 1];
 
             if (nextLine.includes("COUNTY")) {
               const countyName = nextLine.replace("PARTS OF ", "").trim();
