@@ -1,7 +1,7 @@
 import { error } from "console";
 import Interruption from "../db/models/interruption.js";
 import sequelize from "../db/config/connection.js";
-import { QueryTypes } from "sequelize";
+import { Op } from "sequelize";
 
 const createInterruption = (request, response) => {
   const newInterruption = request.body;
@@ -79,11 +79,13 @@ const updateInterruption = (request, response) => {
 async function searchInterruption(request, response) {
   const searchTerm = request.params.location;
 
-  await sequelize
-    .query("SELECT * FROM `interruption` WHERE locations LIKE :search", {
-      replacements: { search: "%" + searchTerm + "%" },
-      type: QueryTypes.SELECT,
-    })
+  await Interruption.findAll({
+    where: {
+      locations: {
+        [Op.like]: "%" + searchTerm + "%",
+      },
+    },
+  })
     .then((res) => {
       res
         ? response.status(200).send(res)
