@@ -4,6 +4,14 @@ import AppConfig from "../db/models/app_config.js";
 import FileDetails from "../db/models/file_details.js";
 import path from "path";
 
+const promisifiedHttpsGet = function (url) {
+  return new Promise((resolve, reject) => {
+    Https.get(url, (response) => {
+      resolve(response);
+    });
+  });
+};
+
 /**
  * Download a file from the given `url` into the `targetFolder`.
  *
@@ -13,22 +21,23 @@ import path from "path";
  * @returns {Promise<void>}
  */
 
-let targetFolder = "";
-let filename = "";
-async function downloadService(url) {
-  return await new Promise((resolve, reject) => {
-    Https.get(url, (response) => {
+function downloadService(url, targetFolder) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await promisifiedHttpsGet(url);
       const code = response.statusCode ?? 0;
 
-      filename = "";
+      let filename = "";
 
       if (code >= 400) {
         return reject(new Error(response.statusMessage));
       }
 
       // handle redirects
-      if (code > 300 && code < 400 && !!response.headers.location) {
-        return resolve(downloadService(response.headers.location));
+      if (code > 300 && !!response.headers.location) {
+        return resolve(
+          await downloadService(response.headers.location, targetFolder)
+        );
       }
 
       filename = decodeURI(url.split("/").pop());
@@ -48,71 +57,57 @@ async function downloadService(url) {
         console.log(
           `Error occurred while writing to file ${filename}: ${error}`
         );
-        resolve({});
+        reject(error);
       });
 
       fileWriter.on("finish", () => {
-        resolve({});
+        resolve({ filename });
       });
 
       response.pipe(fileWriter);
-    }).on("error", (error) => {
+    } catch (error) {
       reject(error);
-    });
+    }
   });
 }
 
-const downloadFile = (request, response) => {
-  AppConfig.findAll()
-    .then((res) => {
-      const appconf = JSON.parse(JSON.stringify(res));
-
-      targetFolder = appconf[0].downloadPath;
-
-      FileDetails.findAll({
-        where: {
-          downloadStatus: "pending",
-        },
-      })
-        .then((records) => {
-          records.forEach((record) => {
-            record = JSON.parse(JSON.stringify(record));
-            let downloadUrl = record.url;
-
-            //when download is completed, update the status to completed
-            downloadService(downloadUrl)
-              .then(() => {
-                console.log("Download completed:", downloadUrl);
-              })
-              .then(() => {
-                record.downloadStatus = "completed";
-                record.downloadFilename = filename;
-                record.parseStatus = "pending";
-
-                FileDetails.update(record, {
-                  where: { id: record.id },
-                })
-                  .then((res) => {
-                    console.log("Record status updated to completed.");
-                  })
-                  .catch((error) => {
-                    console.log(
-                      "Error occurred while updating status to completed: ",
-                      error
-                    );
-                  });
-              });
-          });
-          response.sendStatus(200);
-        })
-        .catch((error) => {
-          console.log("Error occurred: ", error);
-          response.status(400);
-        });
-    })
-    .catch((error) => {
-      console.log("error occurred: ", error);
+const downloadFile = async (request, response) => {
+  try {
+    const appConf = await AppConfig.findOne({
+      where: {
+        id: 1,
+      },
     });
+
+    const targetFolder = appConf.downloadPath;
+    const records = await FileDetails.findAll({
+      where: {
+        downloadStatus: "pending",
+      },
+    });
+
+    for (const record of records) {
+      const downloadUrl = record.url;
+
+      //when download is completed, update the status to completed
+      const result = await downloadService(downloadUrl, targetFolder);
+      if (!result.filename) {
+        continue;
+      }
+
+      record.downloadStatus = "completed";
+      record.downloadFilename = result.filename;
+      record.parseStatus = "pending";
+      await record.save();
+
+      console.log("File downloaded and record status updated to completed.");
+    }
+
+    response.sendStatus(200);
+  } catch (error) {
+    console.log("Error occurred: ", error);
+    response.status(400);
+  }
 };
 
 export default { downloadFile };
