@@ -24,6 +24,7 @@ function parse_pdf(pdf_file) {
       const textContent = pdfParser.getRawTextContent();
       const lines = textContent.split("\n");
       const regions = [];
+      const areas2 = [];
 
       //we want to add the missing county because the pdf does not include NAIROBI COUNTY after the line that has NAIROBI REGION
       const indexNairobiRegion = lines.indexOf("NAIROBI REGION \r");
@@ -143,8 +144,13 @@ function parse_pdf(pdf_file) {
                   locations = locations.replace(/\s+/g, " ").trim(); //clean extra spaces
 
                   area.locations = locations;
+                  area.county = countyName;
+                  area.region = regionName;
+
+                  console.log("the area:", area);
 
                   areas.push(area);
+                  areas2.push(area);
                 }
               }
 
