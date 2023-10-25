@@ -118,9 +118,11 @@ function parse_pdf(pdf_file) {
                       continue;
                     }
 
+                    //some lines don't have DATE:, just DATE , hence the extra check
                     if (
-                      nextAreaLine.includes("DATE:") &&
-                      nextAreaLine.includes("TIME:")
+                      (nextAreaLine.includes("DATE") ||
+                        nextAreaLine.includes("DATE ")) &&
+                      nextAreaLine.includes("TIME")
                     ) {
                       const { date, startTime, endTime } =
                         parseDateTime(nextAreaLine);
@@ -164,82 +166,57 @@ function parse_pdf(pdf_file) {
  * @param {Object} request - The HTTP request object.
  * @param {Object} response - The HTTP response object.
  */
-const parseInterruptionsPdf = (request, response) => {
-  AppConfig.findAll()
-    .then((res) => {
-      const appconf = JSON.parse(JSON.stringify(res));
-
-      const targetFolder = appconf[0].downloadPath;
-
-      FileDetails.findAll({
-        where: {
-          parseStatus: "pending",
-        },
-      })
-        .then((files) => {
-          files.forEach((file) => {
-            file = JSON.parse(JSON.stringify(file));
-            const downloadFilename = file.downloadFilename;
-            const parseFilename = path.join(targetFolder, downloadFilename);
-
-            parse_pdf(parseFilename)
-              .then((areas) => {
-                file.parseStatus = "completed";
-                file.parseText = JSON.stringify(areas);
-
-                //update the interruptions table
-
-                for (let area of areas) {
-                  const newInterruption = {
-                    date: area.date,
-                    startTime: area.startTime,
-                    endTime: area.endTime,
-                    locations: area.locations,
-                    area: area.area,
-                    county: area.county,
-                    region: area.region,
-                  };
-
-                  Interruption.create(newInterruption)
-                    .then((res) => {})
-                    .catch((error) => {
-                      console.log(
-                        "Error occurred while adding interruption to database: ",
-                        error
-                      );
-                    });
-                }
-
-                FileDetails.update(file, {
-                  where: { id: file.id },
-                })
-                  .then((res) => {})
-                  .catch((error) => {
-                    console.log(
-                      "Error occurred while updating parse status to completed: ",
-                      error
-                    );
-                  });
-              })
-              .catch((error) => {
-                console.log(
-                  "Error occurred while parsing file: ",
-                  parseFilename,
-                  error
-                );
-              });
-          });
-          response.sendStatus(200);
-        })
-        .catch((error) => {
-          console.log("Error occurred while getting records to parse: ", error);
-          response.sendStatus(500);
-        });
-    })
-    .catch((error) => {
-      console.log("Error occurred while getting app config: ", error);
-      response.sendStatus(500);
+const parseInterruptionsPdf = async (request, response) => {
+  try {
+    //get the folder where the files are downloaded
+    const appConfig = await AppConfig.findOne({
+      where: {
+        id: 1,
+      },
     });
+
+    const targetFolder = appConfig.downloadPath;
+
+    //get all the unparsed files
+    const pendingFiles = await FileDetails.findAll({
+      where: {
+        parseStatus: "pending",
+      },
+    });
+
+    for (const pendingFile of pendingFiles) {
+      const downloadFilename = pendingFile.downloadFilename;
+      const parseFilename = path.join(targetFolder, downloadFilename);
+
+      const areas = await parse_pdf(parseFilename);
+
+      pendingFile.parseStatus = "completed";
+      pendingFile.parseText = JSON.stringify(areas);
+
+      for (let area of areas) {
+        const newInterruption = {
+          date: area.date,
+          startTime: area.startTime,
+          endTime: area.endTime,
+          locations: area.locations,
+          area: area.area,
+          county: area.county,
+          region: area.region,
+        };
+
+        console.log("area:", area);
+
+        await Interruption.create(newInterruption);
+      }
+
+      await pendingFile.save();
+    }
+
+    response.sendStatus(200);
+  } catch (error) {
+    console.log("Error while parsing pdf:", error);
+    response.sendStatus(500);
+  }
 };
 
 /**
@@ -269,10 +246,15 @@ function parseDateTime(nextAreaLine) {
   let endTime = "";
   let date = "";
 
+  nextAreaLine = nextAreaLine
+    .replace("DATE:", "DATE")
+    .replace("TIME:", "TIME")
+    .trim();
+
   try {
     date = nextAreaLine
-      .split("TIME:")[0]
-      .replace("DATE:", "")
+      .split("TIME")[0]
+      .replace("DATE", "")
       .trim()
       .split(" ")[1]
       .replace(".", "");
@@ -281,7 +263,7 @@ function parseDateTime(nextAreaLine) {
 
     date = new Date(date).toISOString().slice(0, 10);
 
-    const timeParts = nextAreaLine.split("TIME:")[1].trim().split("-");
+    const timeParts = nextAreaLine.split("TIME")[1].trim().split("-");
 
     startTime = convert12to24hour(timeParts[0].trim());
 
