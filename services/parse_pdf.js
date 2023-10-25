@@ -3,6 +3,7 @@ import AppConfig from "../db/models/app_config.js";
 import FileDetails from "../db/models/file_details.js";
 import path from "path";
 import Interruption from "../db/models/interruption.js";
+import { time } from "console";
 
 /**
  * Parses a PDF file and extracts information about power outages in different regions and counties.
@@ -119,39 +120,16 @@ function parse_pdf(pdf_file) {
                       continue;
                     }
 
-                    if (nextAreaLine.includes("DATE:")) {
-                      let startTime = "";
-                      let endTime = "";
-                      let date = "";
+                    if (
+                      nextAreaLine.includes("DATE:") &&
+                      nextAreaLine.includes("TIME:")
+                    ) {
+                      const { date, startTime, endTime } =
+                        parseDateTime(nextAreaLine);
 
-                      if (nextAreaLine.includes("TIME:") === true) {
-                        date = nextAreaLine
-                          .split("TIME:")[0]
-                          .replace("DATE:", "")
-                          .trim()
-                          .split(" ")[1]
-                          .replace(".", "");
-
-                        date =
-                          date.slice(4) +
-                          "-" +
-                          date.slice(2, 4) +
-                          "-" +
-                          date.slice(0, 2);
-
-                        date = new Date(date).toISOString().slice(0, 10);
-
-                        const timeParts = nextAreaLine
-                          .split("TIME:")[1]
-                          .trim()
-                          .split("-");
-
-                        startTime = convert12to24hour(timeParts[0].trim());
-
-                        endTime =
-                          timeParts.length > 1
-                            ? convert12to24hour(timeParts[1].trim())
-                            : "";
+                      //lines that dont have date and time are ignored
+                      if (startTime === "" || date === "") {
+                        continue;
                       }
 
                       area.date = date;
@@ -198,7 +176,7 @@ function parse_pdf(pdf_file) {
  * @param {Object} request - The HTTP request object.
  * @param {Object} response - The HTTP response object.
  */
-const pdfParse = (request, response) => {
+const parseInterruptionsPdf = (request, response) => {
   AppConfig.findAll()
     .then((res) => {
       const appconf = JSON.parse(JSON.stringify(res));
@@ -310,4 +288,44 @@ function convert12to24hour(time) {
   return time24hour;
 }
 
-export default { pdfParse };
+function parseDateTime(nextAreaLine) {
+  let startTime = "";
+  let endTime = "";
+  let date = "";
+
+  try {
+    date = nextAreaLine
+      .split("TIME:")[0]
+      .replace("DATE:", "")
+      .trim()
+      .split(" ")[1]
+      .replace(".", "");
+
+    date = date.slice(4) + "-" + date.slice(2, 4) + "-" + date.slice(0, 2);
+
+    date = new Date(date).toISOString().slice(0, 10);
+
+    const timeParts = nextAreaLine.split("TIME:")[1].trim().split("-");
+
+    startTime = convert12to24hour(timeParts[0].trim());
+
+    if (timeParts.length > 1) {
+      endTime = timeParts[1].trim();
+    } else {
+      endTime = "5.00 P.M."; //default end time
+    }
+
+    endTime = convert12to24hour(endTime);
+  } catch (error) {
+    console.log(
+      "Error occurred while parsing date and time: ",
+      error,
+      " on line:",
+      nextAreaLine
+    );
+  }
+
+  return { date, startTime, endTime };
+}
+
+export default { parseInterruptionsPdf };
