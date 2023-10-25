@@ -61,7 +61,7 @@ app.put("/file-details", fileDetailsMethods.updateFileDetails);
 
 app.post("/get-upload-files", urlScraperMethods.uploadFileNames);
 app.post("/download-files", downloadFilesMethods.downloadFile);
-app.post("/parse-files", parseFileMethods.pdfParse);
+app.post("/parse-files", parseFileMethods.parseInterruptionsPdf);
 
 const SERVER_PORT = process.env.SERVER_PORT || 4000;
 
