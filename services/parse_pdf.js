@@ -170,7 +170,7 @@ function parse_pdf(pdf_file) {
         }
       }
 
-      resolve(regions);
+      resolve(areas2);
     });
 
     pdfParser.loadPDF(pdf_file);
@@ -201,44 +201,32 @@ const parseInterruptionsPdf = (request, response) => {
             const parseFilename = path.join(targetFolder, downloadFilename);
 
             parse_pdf(parseFilename)
-              .then((regions) => {
+              .then((areas) => {
                 file.parseStatus = "completed";
-                file.parseText = JSON.stringify(regions);
+                file.parseText = JSON.stringify(areas);
 
                 //update the interruptions table
-                regions.forEach((region) => {
-                  let regionName = Object.keys(region)[0];
 
-                  let regionCounties = JSON.parse(region[regionName]).counties;
+                for (let area of areas) {
+                  const newInterruption = {
+                    date: area.date,
+                    startTime: area.startTime,
+                    endTime: area.endTime,
+                    locations: area.locations,
+                    area: area.area,
+                    county: area.county,
+                    region: area.region,
+                  };
 
-                  for (let county in regionCounties) {
-                    let countyName = Object.keys(regionCounties[county])[0];
-
-                    const countyAreas =
-                      regionCounties[county][countyName].areas;
-
-                    for (let area of countyAreas) {
-                      const newInterruption = {
-                        date: area.date,
-                        startTime: area.startTime,
-                        endTime: area.endTime,
-                        locations: area.locations,
-                        area: area.area,
-                        county: countyName,
-                        region: regionName,
-                      };
-
-                      Interruption.create(newInterruption)
-                        .then((res) => {})
-                        .catch((error) => {
-                          console.log(
-                            "Error occurred while adding interruption to database: ",
-                            error
-                          );
-                        });
-                    }
-                  }
-                });
+                  Interruption.create(newInterruption)
+                    .then((res) => {})
+                    .catch((error) => {
+                      console.log(
+                        "Error occurred while adding interruption to database: ",
+                        error
+                      );
+                    });
+                }
 
                 FileDetails.update(file, {
                   where: { id: file.id },
