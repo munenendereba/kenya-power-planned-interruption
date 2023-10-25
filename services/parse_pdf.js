@@ -23,8 +23,7 @@ function parse_pdf(pdf_file) {
     pdfParser.on("pdfParser_dataReady", (pdfData) => {
       const textContent = pdfParser.getRawTextContent();
       const lines = textContent.split("\n");
-      const regions = [];
-      const areas2 = [];
+      const areas = [];
 
       //we want to add the missing county because the pdf does not include NAIROBI COUNTY after the line that has NAIROBI REGION
       const indexNairobiRegion = lines.indexOf("NAIROBI REGION \r");
@@ -49,7 +48,6 @@ function parse_pdf(pdf_file) {
 
       for (let i = 0; i < numLines; i++) {
         const line = lines[i].replace("\r", "").trim();
-        const counties = [];
 
         // we are checking for region
         if (line.includes("REGION")) {
@@ -72,7 +70,6 @@ function parse_pdf(pdf_file) {
             if (nextLine.includes("COUNTY")) {
               const countyName = nextLine.replace("PARTS OF ", "").trim();
 
-              const areas = [];
               //we want to get all the areas in the county
               for (let k = j + 1; k < lines.length; k++) {
                 j = k - 1; //progress the counter
@@ -147,30 +144,15 @@ function parse_pdf(pdf_file) {
                   area.county = countyName;
                   area.region = regionName;
 
-                  console.log("the area:", area);
-
                   areas.push(area);
-                  areas2.push(area);
                 }
               }
-
-              const countyAreas = { areas: areas };
-              const newCounty = { [countyName]: countyAreas };
-
-              counties.push(newCounty); //add the county
             }
           }
-
-          const regionCounties = { counties: counties };
-          const newRegion = {
-            [regionName]: JSON.stringify(regionCounties),
-          };
-
-          regions.push(newRegion); //add the region
         }
       }
 
-      resolve(areas2);
+      resolve(areas);
     });
 
     pdfParser.loadPDF(pdf_file);
